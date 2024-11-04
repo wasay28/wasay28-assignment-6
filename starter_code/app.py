@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 import io
 import base64
+import time
 
 app = Flask(__name__)
 
@@ -102,8 +103,14 @@ def index():
         # Generate plots and results
         plot1, plot2, slope_extreme, intercept_extreme = generate_plots(N, mu, sigma2, S)
 
-        return render_template("index.html", plot1=plot1, plot2=plot2,
-                               slope_extreme=slope_extreme, intercept_extreme=intercept_extreme)
+        # Add timestamp to force browser to reload images
+        timestamp = str(time.time())
+
+        return render_template("index.html", 
+                             plot1=f"{plot1}?t={timestamp}", 
+                             plot2=f"{plot2}?t={timestamp}",
+                             slope_extreme=slope_extreme, 
+                             intercept_extreme=intercept_extreme)
 
     return render_template("index.html")
 
